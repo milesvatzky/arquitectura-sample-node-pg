@@ -6,7 +6,7 @@ import pkg from 'pg'
 
 const { Pool }  = pkg;
 
-const pool = new Pool(config);
+const pool = new Pool(config); //pool en vez de client
 const router = Router();
 
 router.get('', async (req, res) => {
@@ -20,7 +20,7 @@ router.get('', async (req, res) => {
     } 
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res) => { //solo le pones '' porque ya sabe a donde tiene que ir, tiene su prefijo, que es api/alumnos
     let id = req.params.id;
 
     try{
@@ -133,4 +133,4 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-export default router;
+export default router; //este bloque tiene toda la informacion adentro

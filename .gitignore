@@ -1,0 +1,15 @@
+node_modules/
+.env
+logs/
+
+# archivos del sistema
+.DS_Store
+Thumbs.db
+
+# logs npm
+npm-debug.log*
+
+# archivos generados
+dist/
+coverage/
+

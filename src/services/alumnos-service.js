@@ -26,11 +26,11 @@ export default class AlumnosService {
         this.CursosService = new CursosService();
     }
 
-    getAllAsync = async () => {
+    getAllAsync = async () => { 
         console.log(`AlumnosService.getAllAsync()`);
-        const returnArray = await this.AlumnosRepository.getAllAsync();
+        const returnArray = await this.AlumnosRepository.getAllAsync(); //va al respositorio y llama al metodo getall
         if (returnArray == null) return null;
-        return returnArray.map(alumno => agregarEdad(alumno));
+        return returnArray.map(alumno => agregarEdad(alumno)); 
     }
 
     getByIdAsync = async (id) => {
@@ -40,7 +40,7 @@ export default class AlumnosService {
         return agregarEdad(returnEntity);
     }
 
-    createAsync = async (entity) => {
+    createAsync = async (entity) => { //insertar
         console.log(`AlumnosService.createAsync(${JSON.stringify(entity)})`);
         // Regla de negocio!!!
         await this.validarCursoExiste(entity.id_curso);

@@ -36,4 +36,4 @@ const DBConfig = {
 }
 */
 console.log('configuracion obtenida de .env', DBConfig);
-export default DBConfig;
+export default DBConfig; //te devuelve un objeto que te dice la configuracion de la base de datos

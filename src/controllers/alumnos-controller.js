@@ -36,7 +36,7 @@ router.get('/test-insert', async (req, res) => {
 router.get('', async (req, res) => {
     try {
         console.log(`AlumnosController.get`);
-        const returnArray = await currentService.getAllAsync();
+        const returnArray = await currentService.getAllAsync(); //dame todos
         if (returnArray != null){
             res.status(StatusCodes.OK).json(returnArray);
         } else {
