@@ -6,6 +6,8 @@ import cors 	from "cors";	// hacer npm i cors
 // Controllers
 import AlumnosController    from "./controllers/alumnos-controller.js"
 import CursosController     from "./controllers/cursos-controller.js"
+import MateriasController       from "./controllers/materias-controller.js"
+import CalificacionesController from "./controllers/calificaciones-controller.js"
 //import MateriasController       from "./controllers/materias-controller.js"
 //import CalificacionesController from "./controllers/calificaciones-controller.js"
 
@@ -19,6 +21,8 @@ app.use(express.json()); // Middleware para parsear y comprender JSON
 // Endpoints (todos los Routers)
 app.use("/api/alumnos", AlumnosController); 
 app.use("/api/cursos" , CursosController);
+app.use("/api/materias",        MateriasController);
+app.use("/api/calificaciones",  CalificacionesController);
 
 // ... junto con los app.use existentes:
 //app.use("/api/materias",        MateriasController);
