@@ -2,24 +2,24 @@ import Db from './db-pg.js';
 
 export default class AlumnosRepository {
     constructor() {
-        console.log('Estoy en: AlumnosRepository-new.constructor()');
+        console.log('Estoy en: AlumnosRepository.constructor()');
         this.db = new Db();
     }
 
     getAllAsync = async () => {
-        console.log(`AlumnosRepository-new.getAllAsync()`);
+        console.log(`AlumnosRepository.getAllAsync()`);
         const sql = `SELECT * FROM alumnos`;
         return await this.db.queryAll(sql);
     }
 
     getByIdAsync = async (id) => {
-        console.log(`AlumnosRepository-new.getByIdAsync(${id})`);
+        console.log(`AlumnosRepository.getByIdAsync(${id})`);
         const sql = `SELECT * FROM alumnos WHERE id=$1`;
         return await this.db.queryOne(sql, [id]);
     }
 
     createAsync = async (entity) => {
-        console.log(`AlumnosRepository-new.createAsync(${JSON.stringify(entity)})`);
+        console.log(`AlumnosRepository.createAsync(${JSON.stringify(entity)})`);
         const sql = ` INSERT INTO alumnos (
                             nombre              ,
                             apellido            ,
@@ -44,7 +44,7 @@ export default class AlumnosRepository {
     }
 
     updateAsync = async (entity) => {
-        console.log(`AlumnosRepository-new.updateAsync(${JSON.stringify(entity)})`);
+        console.log(`AlumnosRepository.updateAsync(${JSON.stringify(entity)})`);
         let id = entity.id;
 
         const previousEntity = await this.getByIdAsync(id);
@@ -69,7 +69,7 @@ export default class AlumnosRepository {
     }
 
     deleteByIdAsync = async (id) => {
-        console.log(`AlumnosRepository-new.deleteByIdAsync(${id})`);
+        console.log(`AlumnosRepository.deleteByIdAsync(${id})`);
         const sql = `DELETE FROM alumnos WHERE id=$1`;
         return await this.db.queryRowCount(sql, [id]);
     }

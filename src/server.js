@@ -8,8 +8,7 @@ import AlumnosController    from "./controllers/alumnos-controller.js"
 import CursosController     from "./controllers/cursos-controller.js"
 import MateriasController       from "./controllers/materias-controller.js"
 import CalificacionesController from "./controllers/calificaciones-controller.js"
-//import MateriasController       from "./controllers/materias-controller.js"
-//import CalificacionesController from "./controllers/calificaciones-controller.js"
+
 
 const app  = express();
 const port = process.env.PORT || 3000;  // si no esta definido en el archivo .env uso el 3000.
@@ -24,10 +23,6 @@ app.use("/api/cursos" , CursosController);
 app.use("/api/materias",        MateriasController);
 app.use("/api/calificaciones",  CalificacionesController);
 
-// ... junto con los app.use existentes:
-//app.use("/api/materias",        MateriasController);
-//app.use("/api/calificaciones",  CalificacionesController);
-// agregar materias
 
 //
 // Inicio el Server y lo pongo a escuchar.

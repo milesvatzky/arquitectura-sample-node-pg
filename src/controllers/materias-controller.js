@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import MateriasService from './../services/materias-service.js';
-import Materia from './../entities/materia.js';
 
 const router = Router();
 const currentService = new MateriasService();

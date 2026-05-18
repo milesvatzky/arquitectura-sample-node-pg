@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import CalificacionesService from './../services/calificaciones-service.js';
-import Calificacion from './../entities/calificacion.js';
 
 const router = Router();
 const currentService = new CalificacionesService();
