@@ -30,10 +30,12 @@ router.get('/:id', async (req, res) => {
             res.status(StatusCodes.NOT_FOUND).send(`No se encontro la entidad (id:${id}).`);
         }
     } catch (error) {
-        console.log(error);
+       console.log(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`Error: ${error.message}`);
     }
 });
+
+
 
 router.post('', async (req, res) => {
     try {
