@@ -1,6 +1,6 @@
 const DBConfig = {
 
-    connectionString: 'postgresql://postgres:mileLesanSofi@db.yijbttjbdjapwhcgfkcq.supabase.co:5432/postgres'
+    connectionString: 'postgresql://postgres.yijbttjbdjapwhcgfkcq:XVONALccw55brqGt@aws-1-us-east-2.pooler.supabase.com:5432/postgres'
 }
 console.log('configuracion hardcodeada');
 

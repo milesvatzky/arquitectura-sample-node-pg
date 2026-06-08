@@ -1,5 +1,5 @@
 import pkg from 'pg'
-import config from './../configs/db-config.js';
+import DBConfig from './../configs/db-config.js';
 import LogHelper from './../helpers/log-helper.js'
 
 const { Pool } = pkg;
@@ -11,7 +11,7 @@ export default class DbPg {
 
     getDBPool = () => {
         if (this.DBPool == null) {
-            this.DBPool = new Pool(config);
+            this.DBPool = new Pool(DBConfig);
         }
         return this.DBPool;
     }
