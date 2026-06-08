@@ -1,229 +1,152 @@
 import Db from './db-pg.js';
 
-const { Client } = Db;
-
 export default class CalificacionesRepository {
+    constructor() {
+        console.log('Estoy en: CalificacionesRepository.constructor()');
+        this.db = new Db();
+    }
 
     getAllAsync = async () => {
-        const client = new Client(config);
+        console.log('CalificacionesRepository.getAllAsync()');
 
-        try {
-            await client.connect();
+        const sql = `
+            SELECT
+                c.id,
+                c.id_alumno,
+                a.nombre AS nombre_alumno,
+                a.apellido AS apellido_alumno,
+                c.id_materia,
+                m.nombre AS nombre_materia,
+                c.nota,
+                c.fecha
+            FROM calificaciones c
+            INNER JOIN alumnos a ON c.id_alumno = a.id
+            INNER JOIN materias m ON c.id_materia = m.id
+            ORDER BY c.id
+        `;
 
-            const sql = `
-                SELECT
-                    c.id,
-                    c.id_alumno,
-                    a.nombre AS nombre_alumno,
-                    a.apellido AS apellido_alumno,
-                    c.id_materia,
-                    m.nombre AS nombre_materia,
-                    c.nota,
-                    c.fecha
-                FROM calificaciones c
-                INNER JOIN alumnos a
-                    ON c.id_alumno = a.id
-                INNER JOIN materias m
-                    ON c.id_materia = m.id
-                ORDER BY c.id
-            `;
-
-            const result = await client.query(sql);
-
-            return result.rows;
-
-        } catch (error) {
-            throw error;
-
-        } finally {
-            await client.end();
-        }
+        return await this.db.queryAll(sql);
     }
 
     getByIdAsync = async (id) => {
-        const client = new Client(config);
+        console.log(`CalificacionesRepository.getByIdAsync(${id})`);
 
-        try {
-            await client.connect();
+        const sql = `
+            SELECT
+                c.id,
+                c.id_alumno,
+                a.nombre AS nombre_alumno,
+                a.apellido AS apellido_alumno,
+                c.id_materia,
+                m.nombre AS nombre_materia,
+                c.nota,
+                c.fecha
+            FROM calificaciones c
+            INNER JOIN alumnos a ON c.id_alumno = a.id
+            INNER JOIN materias m ON c.id_materia = m.id
+            WHERE c.id = $1
+        `;
 
-            const sql = `
-                SELECT
-                    c.id,
-                    c.id_alumno,
-                    a.nombre AS nombre_alumno,
-                    a.apellido AS apellido_alumno,
-                    c.id_materia,
-                    m.nombre AS nombre_materia,
-                    c.nota,
-                    c.fecha
-                FROM calificaciones c
-                INNER JOIN alumnos a
-                    ON c.id_alumno = a.id
-                INNER JOIN materias m
-                    ON c.id_materia = m.id
-                WHERE c.id = $1
-            `;
-
-            const values = [id];
-
-            const result = await client.query(sql, values);
-
-            return result.rows[0];
-
-        } catch (error) {
-            throw error;
-
-        } finally {
-            await client.end();
-        }
+        return await this.db.queryOne(sql, [id]);
     }
 
     getByAlumnoAsync = async (idAlumno) => {
-        const client = new Client(config);
+        console.log(`CalificacionesRepository.getByAlumnoAsync(${idAlumno})`);
 
-        try {
-            await client.connect();
+        const sql = `
+            SELECT
+                c.id,
+                c.id_materia,
+                m.nombre AS nombre_materia,
+                c.nota,
+                c.fecha
+            FROM calificaciones c
+            INNER JOIN materias m ON c.id_materia = m.id
+            WHERE c.id_alumno = $1
+            ORDER BY c.id
+        `;
 
-            const sql = `
-                SELECT
-                    c.id,
-                    c.id_materia,
-                    m.nombre AS nombre_materia,
-                    c.nota,
-                    c.fecha
-                FROM calificaciones c
-                INNER JOIN materias m
-                    ON c.id_materia = m.id
-                WHERE c.id_alumno = $1
-                ORDER BY c.id
-            `;
-
-            const values = [idAlumno];
-
-            const result = await client.query(sql, values);
-
-            return result.rows;
-
-        } catch (error) {
-            throw error;
-
-        } finally {
-            await client.end();
-        }
+        return await this.db.queryAll(sql, [idAlumno]);
     }
 
     getByAlumnoMateriaAsync = async (idAlumno, idMateria) => {
-        const client = new Client(config);
+        console.log(`CalificacionesRepository.getByAlumnoMateriaAsync(${idAlumno}, ${idMateria})`);
 
-        try {
-            await client.connect();
+        const sql = `
+            SELECT *
+            FROM calificaciones
+            WHERE id_alumno = $1
+            AND id_materia = $2
+        `;
 
-            const sql = `
-                SELECT *
-                FROM calificaciones
-                WHERE id_alumno = $1
-                AND id_materia = $2
-            `;
-
-            const values = [idAlumno, idMateria];
-
-            const result = await client.query(sql, values);
-
-            return result.rows[0];
-
-        } catch (error) {
-            throw error;
-
-        } finally {
-            await client.end();
-        }
+        return await this.db.queryOne(sql, [idAlumno, idMateria]);
     }
 
     createAsync = async (entity) => {
-        const client = new Client(config);
+        console.log(`CalificacionesRepository.createAsync(${JSON.stringify(entity)})`);
 
-        try {
-            await client.connect();
+        const sql = `
+            INSERT INTO calificaciones
+            (
+                id_alumno,
+                id_materia,
+                nota,
+                fecha
+            )
+            VALUES
+            (
+                $1,
+                $2,
+                $3,
+                $4
+            )
+            RETURNING id
+        `;
 
-            const sql = `
-                INSERT INTO calificaciones
-                (id_alumno, id_materia, nota, fecha)
-                VALUES ($1, $2, $3, $4)
-                RETURNING *
-            `;
+        const values = [
+            entity?.id_alumno ?? 0,
+            entity?.id_materia ?? 0,
+            entity?.nota ?? 0,
+            entity?.fecha ?? null
+        ];
 
-            const values = [
-                entity.id_alumno,
-                entity.id_materia,
-                entity.nota,
-                entity.fecha || null
-            ];
-
-            const result = await client.query(sql, values);
-
-            return result.rows[0];
-
-        } catch (error) {
-            throw error;
-
-        } finally {
-            await client.end();
-        }
+        return await this.db.queryReturnId(sql, values);
     }
 
     updateAsync = async (entity) => {
-        const client = new Client(config);
+        console.log(`CalificacionesRepository.updateAsync(${JSON.stringify(entity)})`);
 
-        try {
-            await client.connect();
+        const previousEntity = await this.getByIdAsync(entity.id);
 
-            const sql = `
-                UPDATE calificaciones
-                SET nota = $2,
-                    fecha = $3
-                WHERE id = $1
-            `;
-
-            const values = [
-                entity.id,
-                entity.nota,
-                entity.fecha || null
-            ];
-
-            const result = await client.query(sql, values);
-
-            return result.rowCount;
-
-        } catch (error) {
-            throw error;
-
-        } finally {
-            await client.end();
+        if (previousEntity == null) {
+            return 0;
         }
+
+        const sql = `
+            UPDATE calificaciones
+            SET
+                nota = $2,
+                fecha = $3
+            WHERE id = $1
+        `;
+
+        const values = [
+            entity.id,
+            entity?.nota ?? previousEntity.nota,
+            entity?.fecha ?? previousEntity.fecha
+        ];
+
+        return await this.db.queryRowCount(sql, values);
     }
 
     deleteByIdAsync = async (id) => {
-        const client = new Client(config);
+        console.log(`CalificacionesRepository.deleteByIdAsync(${id})`);
 
-        try {
-            await client.connect();
+        const sql = `
+            DELETE FROM calificaciones
+            WHERE id = $1
+        `;
 
-            const sql = `
-                DELETE FROM calificaciones
-                WHERE id = $1
-            `;
-
-            const values = [id];
-
-            const result = await client.query(sql, values);
-
-            return result.rowCount;
-
-        } catch (error) {
-            throw error;
-
-        } finally {
-            await client.end();
-        }
+        return await this.db.queryRowCount(sql, [id]);
     }
 }
